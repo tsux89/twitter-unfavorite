@@ -8,7 +8,8 @@ require 'pp'
 
 # 定義
 CONSUMER_KEY = ''
-CONSUMER_SECRET = '' 
+CONSUMER_SECRET = ''
+
 OAUTH_TOKEN = ''
 OAUTH_TOKEN_SECRET = ''
 
@@ -31,7 +32,10 @@ client = TweetStream::Client.new
 
 client.on_event(:unfavorite) do |event|
   
-  $host.update("@#{event[:source][:screen_name]} ( ◠‿◠ )☝ あんふぁぼをみていたぞ")
+  #自分があんふぁぼ[した]ときに通知が飛んでくるのを防ぐ
+  if event[:target][:screen_name] =~ /k534[2345]/ then
+    $host.update("@#{event[:source][:screen_name]} ( ◠‿◠ )☝ あんふぁぼをみていたぞ")
+  end
   
   pp event
   puts "===================="
@@ -44,20 +48,19 @@ client.on_event(:unfavorite) do |event|
   }
   
 end
+
+#繋げてるかまあ様子見程度でストリーミング表示する
 client.userstream do |status|
   puts status.user.screen_name
   puts status.text
 end
 
-puts "Connecting to Twitter..."
-
-Thread.new{
+stream = Thread.new{
   client.userstream
 }
 
-#メインスレッドを殺すな
-while true
-end
+#メインスレッドを殺すな(EventMachine使ったほうが無駄なリソース喰わなくていいらしい)
+stream.join
 
 #
 # もうちょっと速くできそうだけどわからない:;(∩´﹏`∩);:

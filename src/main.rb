@@ -7,8 +7,8 @@ require 'tweetstream'
 require 'pp'
 
 # 定義
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
+CONSUMER_KEY = 'Z4OYJ9MYorsl9UtQzh2Eg'
+CONSUMER_SECRET = 'gnLMD0GFd6Ktzyn7judX8OHcXVFnMCpMYDCK1NPro'
 
 OAUTH_TOKEN = ''
 OAUTH_TOKEN_SECRET = ''
